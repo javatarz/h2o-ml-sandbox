@@ -1,0 +1,19 @@
+task installDeps(type: Exec) {
+  commandLine "pipenv", "install"
+}
+
+task train(type: Exec, dependsOn: installDeps) {
+  commandLine "pipenv", "run", "python", "random_forest.py"
+}
+
+tasks.withType(Exec) {
+  standardOutput = new ByteArrayOutputStream()
+  errorOutput = standardOutput
+  ignoreExitValue = true
+  doLast {
+    if (execResult.exitValue != 0) {
+      println(standardOutput.toString())
+      throw new GradleException("exec failed; see output above") as Throwable
+    }
+  }
+}

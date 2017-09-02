@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "40f7279368b332c3f9b28447d6684d872a03449b7945ae3c6aa57061928731f8"
+            "sha256": "258bdc75222a8990c371ea254ff188401928cabfe2da51bc30d241556e98f780"
         },
         "requires": {},
         "sources": [
@@ -29,6 +29,9 @@
         },
         "idna": {
             "version": "==2.6"
+        },
+        "numpy": {
+            "version": "==1.13.1"
         },
         "requests": {
             "version": "==2.18.4"
