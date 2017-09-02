@@ -1,0 +1,44 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "40f7279368b332c3f9b28447d6684d872a03449b7945ae3c6aa57061928731f8"
+        },
+        "requires": {},
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "certifi": {
+            "version": "==2017.7.27.1"
+        },
+        "chardet": {
+            "version": "==3.0.4"
+        },
+        "colorama": {
+            "version": "==0.3.9"
+        },
+        "future": {
+            "version": "==0.16.0"
+        },
+        "h2o": {
+            "version": "==3.10.4.8"
+        },
+        "idna": {
+            "version": "==2.6"
+        },
+        "requests": {
+            "version": "==2.18.4"
+        },
+        "tabulate": {
+            "version": "==0.7.7"
+        },
+        "urllib3": {
+            "version": "==1.22"
+        }
+    },
+    "develop": {}
+}
