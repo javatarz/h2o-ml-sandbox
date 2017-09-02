@@ -2,13 +2,14 @@
 import h2o
 import numpy as np
 import os
+import sys
 from h2o.estimators import H2ORandomForestEstimator
 
 # Number of threads, nthreads = -1, means use all cores on your machine
 # max_mem_size is the maximum memory (in GB) to allocate to H2O
 h2o.init(nthreads=-1, max_mem_size=8)
 
-loan_csv = "data/loan.csv"  # modify this for your machine
+loan_csv = "{}/data/loan.csv".format("" if len(sys.argv) == 0 else sys.argv[1])
 # Alternatively, you can import the data directly from a URL
 # loan_csv = "https://raw.githubusercontent.com/h2oai/app-consumer-loan/master/data/loan.csv"
 loans = h2o.import_file(loan_csv)

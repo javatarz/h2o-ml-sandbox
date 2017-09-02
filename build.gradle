@@ -1,11 +1,3 @@
-task installDeps(type: Exec) {
-  commandLine "pipenv", "install"
-}
-
-task train(type: Exec, dependsOn: installDeps) {
-  commandLine "pipenv", "run", "python", "random_forest.py"
-}
-
 tasks.withType(Exec) {
   standardOutput = new ByteArrayOutputStream()
   errorOutput = standardOutput

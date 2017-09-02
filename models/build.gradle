@@ -1,0 +1,12 @@
+task clean {
+  delete buildDir
+}
+
+task installDeps(type: Exec) {
+  commandLine "pipenv", "install"
+}
+
+task train(type: Exec) {
+  commandLine "pipenv", "run", "python", "models/random_forest.py", ".."
+}
+
