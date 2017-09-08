@@ -6,7 +6,6 @@ task installDeps(type: Exec) {
   commandLine "pipenv", "install"
 }
 
-task train(type: Exec) {
+task train(type: Exec, dependsOn: installDeps) {
   commandLine "pipenv", "run", "python", "models/random_forest.py", ".."
 }
-
