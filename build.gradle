@@ -1,11 +1,15 @@
-tasks.withType(Exec) {
-  standardOutput = new ByteArrayOutputStream()
-  errorOutput = standardOutput
-  ignoreExitValue = true
-  doLast {
-    if (execResult.exitValue != 0) {
-      println(standardOutput.toString())
-      throw new GradleException("exec failed; see output above") as Throwable
+group 'me.karun'
+
+allprojects {
+  tasks.withType(Exec) {
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput = standardOutput
+    ignoreExitValue = true
+    doLast {
+      if (execResult.exitValue != 0) {
+        println(standardOutput.toString())
+        throw new GradleException("exec failed; see output above") as Throwable
+      }
     }
   }
 }
