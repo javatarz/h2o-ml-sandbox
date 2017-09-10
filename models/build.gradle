@@ -1,3 +1,8 @@
+import static java.lang.System.lineSeparator
+
+final packageName = 'me.karun.loans.service.model'
+final prepDir = "${buildDir}/prep"
+
 task clean {
   delete buildDir
 }
@@ -9,3 +14,29 @@ task installDeps(type: Exec) {
 task train(type: Exec, dependsOn: installDeps) {
   commandLine "pipenv", "run", "python", "models/random_forest.py", ".."
 }
+
+task createPrepDir() {
+  doLast {
+    mkdir(prepDir)
+  }
+}
+
+task prepCode(dependsOn: [train, createPrepDir]) {
+  doLast {
+    new File("${prepDir}/BadLoanModel.java")
+      .write("package ${packageName};${lineSeparator()}${lineSeparator()}${new File("${buildDir}/BadLoanModel.java").text}")
+  }
+}
+
+task moveCode(type: Copy, dependsOn: prepCode) {
+  from "${prepDir}/BadLoanModel.java"
+  into '../service/src/main/java/me/karun/loans/service/model'
+}
+
+task moveLibs(type: Copy) {
+  from 'build'
+  include '*.jar'
+  into '../service/lib'
+}
+
+task build(dependsOn: [moveCode, moveLibs])
