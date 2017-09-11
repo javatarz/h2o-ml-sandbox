@@ -12,7 +12,7 @@ task installDeps(type: Exec) {
 }
 
 task train(type: Exec, dependsOn: installDeps) {
-  commandLine "pipenv", "run", "python", "run_training.py", ".."
+  commandLine "pipenv", "run", "python", "run_training.py"
 }
 
 task createPrepDir() {

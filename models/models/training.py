@@ -1,8 +1,8 @@
 import h2o
 import os
-import sys
-
 from .available_models import random_forest_model
+from .available_models import logistic_regression
+from .available_models import gradient_boosting
 
 
 def init_h2o():
@@ -17,13 +17,12 @@ def get_data():
     Get the training and validation data
     :return:
     """
-    loan_csv = "{}/data/loan.csv".format("" if len(sys.argv) == 0 else sys.argv[1])
+    loan_csv = "../data/loan.csv"
     loans = h2o.import_file(loan_csv)
 
     print("Import approved and rejected loan requests...")
 
-    loans["bad_loan"] = loans["bad_loan"].asfactor()
-
+    loans["bad_loan_categorical"] = loans["bad_loan"].asfactor()
     train, valid, test = loans.split_frame([0.79, 0.2], seed=1234)
     return train, valid
 
@@ -41,26 +40,30 @@ def get_input_variables():
     return input_variables
 
 
-def print_gini(model):
-    """
-    Print out the Gini coefficient for binary classification models
-    :param model: Trained H2o model
-    """
-    gini = model.gini(valid=True)
-    print("Gini coefficient: %s" % gini)
-
-
-def get_trained_model(train, valid, name, target_variable):
+def get_trained_model(train, valid, model_name, target_variable, model_type):
     """
     :param train: Training frame
     :param valid: Validation frame
-    :param name: String, Name of model, determines name of file
+    :param model_name: String, Name of model, determines name of file
     :param target_variable: String, Target variable to be predicted
     :return: Trained model
     """
 
+    model = None
+
+    if model_type == "random_forest":
+        model = random_forest_model(model_name)
+
+    elif model_type == "logistic_regression":
+        model = logistic_regression(model_name)
+
+    elif model_type == "gradient_boosting":
+        model = gradient_boosting(model_name)
+
+    else:
+        print("Unrecognized model_type: %s" % model_type)
+
     input_variables = get_input_variables()
-    model = random_forest_model(name)
 
     model.train(input_variables, target_variable,
                 training_frame=train, validation_frame=valid)
@@ -84,3 +87,12 @@ def write_model_pojo(model):
         os.makedirs(output_directory)
 
     h2o.download_pojo(model, path=output_directory)
+
+
+def print_gini(model):
+    """
+    Print out the Gini coefficient for binary classification models
+    :param model: Trained H2o model
+    """
+    gini = model.gini(valid=True)
+    print("Gini coefficient: %s" % gini)
