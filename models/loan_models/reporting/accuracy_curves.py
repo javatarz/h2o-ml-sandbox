@@ -90,7 +90,9 @@ def calculate_gini(fallout, recall):
 
 
 def get_roc_plot(model, valid):
-    pass
+    prediction = model.predict(valid)
+    return prediction
+
 
 
 

@@ -30,6 +30,5 @@ def train_both_models(model_type):
                                             target_variable, model_type)
 
     write_outputs(interest_rate_model, model_name, model_type)
-    hello()
     return bad_loan_model, interest_rate_model, valid
 
