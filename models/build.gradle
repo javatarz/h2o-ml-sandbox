@@ -26,7 +26,7 @@ task createPrepDir() {
 task prepCode(dependsOn: [train, createPrepDir]) {
   doLast {
     new File("${prepDir}/BadLoanModel.java")
-      .write("package ${packageName};${lineSeparator()}${lineSeparator()}${new File("${buildDir}/BadLoanModel.java").text}")
+        .write("package ${packageName};${lineSeparator()}${lineSeparator()}${new File("${buildDir}/BadLoanModel.java").text}")
   }
 }
 

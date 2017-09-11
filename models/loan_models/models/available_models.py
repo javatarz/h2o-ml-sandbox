@@ -2,6 +2,7 @@ import json
 import os
 from h2o.estimators import H2OGradientBoostingEstimator
 from h2o.estimators import H2ORandomForestEstimator
+from h2o.estimators.deeplearning import H2ODeepLearningEstimator
 
 
 def get_params(name_tag):
@@ -34,3 +35,13 @@ def gradient_boosting(name):
     """
     params = get_params("gradient_boosting")
     return H2OGradientBoostingEstimator(model_id=name, **params)
+
+
+def deep_learning(name):
+    """
+    Get the Deep Learning Model
+    :param name: model name, will determine filename
+    :return:
+    """
+    params = get_params("deep_learning")
+    return H2ODeepLearningEstimator(model_id=name, **params)

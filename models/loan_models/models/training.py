@@ -3,7 +3,7 @@ import json
 import os
 
 from .available_models import gradient_boosting
-from .available_models import random_forest_model
+from .available_models import random_forest_model, deep_learning
 
 
 def init_h2o():
@@ -38,6 +38,7 @@ def get_input_variables():
                        "purpose", "addr_state", "dti", "delinq_2yrs",
                        "total_acc", "int_rate", "bad_loan", "verification_status", "term"]
 
+
     return input_variables
 
 
@@ -56,6 +57,8 @@ def get_trained_model(train, valid, model_name, target_variable, model_type):
         model = random_forest_model(model_name)
     elif model_type == "gradient_boosting":
         model = gradient_boosting(model_name)
+    elif model_type == "deep_learning":
+        model = deep_learning(model_name)
     else:
         print("Unrecognized model_type: %s" % model_type)
 
