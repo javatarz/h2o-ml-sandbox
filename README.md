@@ -11,4 +11,5 @@ easy_install pipenv pew virtualenv
 ```bash
 ./gradlew build
 ./gradlew :services:run
+./gradlew :gui:run
 ```
