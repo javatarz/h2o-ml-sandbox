@@ -3,8 +3,14 @@ from .accuracy_curves import calculate_gini
 
 
 def make_roc_plot(fallout, recall):
+    """
+    Make an ROC plot using Bokeh and write to a file
+    :param fallout: False positive rate
+    :param recall: Recall
+    :return: None
+    """
     gini = calculate_gini(fallout, recall)
-    plot = figure(title='ROC plot: gini=%s' % gini,
+    plot = figure(title='ROC plot: gini=%0.4f' % gini,
                   x_axis_label="Fallout",
                   y_axis_label="Recall")
 
