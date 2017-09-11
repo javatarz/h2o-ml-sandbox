@@ -1,35 +1,36 @@
-$(document).ready(function(){
+$(document).ready(function () {
   $response = $('#responseField');
 
   function predict() {
-    var data = {};
+    var input = {};
 
-    $('input').each(function(){
+    $('input').each(function () {
       var $field = $(this);
-      data[$field.attr('data-column')] = $field.val();
+      input[$field.attr('data-column')] = $field.val();
     });
 
-    $('select').each(function(){
+    $('select').each(function () {
       var $field = $(this);
-      data[$field.attr('data-column')] = $field.val();
+      input[$field.attr('data-column')] = $field.val();
     });
 
     $.ajax({
       url: 'http://127.0.0.1:8080/score',
       type: 'POST',
-      data: JSON.stringify(data),
+      data: JSON.stringify(input),
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       async: false,
-      success: function(msg) {
-        console.log(data);
-        if(data.label === '1') {
+      success: function (response) {
+        console.log("Input: ", input);
+        console.log("Response: ", response);
+        if (response.badLoan) {
           $response.text('Declined!');
         } else {
           $response.text('Approved!');
         }
       },
-      failure: function(error) {
+      failure: function (error) {
         console.error(error.responseText ? error.responseText : error);
         $response.text('(Invalid input)');
       }
@@ -38,11 +39,11 @@ $(document).ready(function(){
 
   var updatePrediction = _.debounce(predict, 250);
 
-  $('input').each(function(){
+  $('input').each(function () {
     $(this).keydown(updatePrediction);
   });
 
-  $('select').each(function(){
+  $('select').each(function () {
     $(this).change(updatePrediction);
   });
 

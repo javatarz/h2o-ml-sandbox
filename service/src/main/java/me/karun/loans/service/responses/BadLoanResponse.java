@@ -7,7 +7,7 @@ public class BadLoanResponse {
   private final double probability;
 
   private BadLoanResponse(final BinomialModelPrediction result) {
-    this.badLoan = "0".equals(result.label);
+    this.badLoan = "1".equals(result.label);
     this.probability = result.classProbabilities[1];
   }
 
