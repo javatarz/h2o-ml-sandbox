@@ -89,4 +89,8 @@ def calculate_gini(fallout, recall):
     return gini
 
 
+def get_roc_plot(model, valid):
+    
+
+
 

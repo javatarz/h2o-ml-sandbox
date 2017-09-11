@@ -1,7 +1,5 @@
 from .training import init_h2o, get_data
 from .training import get_trained_model, write_outputs
-from loan_models.reporting.hello import hello
-from loan_models.reporting.accuracy_curves import get_accuracy_curves
 
 
 def train_both_models(model_type):
