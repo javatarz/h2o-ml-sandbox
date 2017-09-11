@@ -3,7 +3,7 @@
 If you have another `python3` installation, please remove it.
 ```bash
 brew install python3
-easy_install pipenv pew virtualenv
+easy_install-3.6 pipenv pew virtualenv
 ```
 
 # Usage
