@@ -1,5 +1,7 @@
 from .training import init_h2o, get_data
 from .training import get_trained_model, write_outputs
+from loan_models.reporting.hello import hello
+from loan_models.reporting.accuracy_curves import get_accuracy_curves
 
 
 def train_both_models(model_type):
@@ -30,5 +32,6 @@ def train_both_models(model_type):
                                             target_variable, model_type)
 
     write_outputs(interest_rate_model, model_name, model_type)
+    hello()
     return bad_loan_model, interest_rate_model, valid
 
