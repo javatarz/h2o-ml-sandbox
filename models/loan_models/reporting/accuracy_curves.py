@@ -86,6 +86,7 @@ def calculate_gini(fallout, recall):
     # Area under the curve
     auc = trapz(recall[so], fallout[so])
     gini = 2 * auc - 1
+    print('Calculated Gini is: %s' % gini)
     return gini
 
 
@@ -124,4 +125,4 @@ def get_fallout_recall(model, frame):
     gini = calculate_gini(accuracy_curves['fallout'],
                           accuracy_curves['recall'])
     print('Calculated Gini is: %s' % gini)
-    return gini
+    return accuracy_curves['fallout'], accuracy_curves['recall']

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "37c85338aafd7705d621d8b4f33389103d4cb5d5af8ede67b82f2956fcf49c3b"
+            "sha256": "bdfc02ccc521894a3667eb16268f75c8923d5b10812d1ffb87a54c0ac427a855"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -28,6 +28,12 @@
     "default": {
         "appnope": {
             "version": "==0.1.0"
+        },
+        "bkcharts": {
+            "version": "==0.2"
+        },
+        "bokeh": {
+            "version": "==0.12.7"
         },
         "certifi": {
             "version": "==2017.7.27.1"
@@ -59,6 +65,12 @@
         "jedi": {
             "version": "==0.10.2"
         },
+        "jinja2": {
+            "version": "==2.9.6"
+        },
+        "markupsafe": {
+            "version": "==1.0"
+        },
         "numpy": {
             "version": "==1.13.1"
         },
@@ -77,6 +89,12 @@
         "pygments": {
             "version": "==2.2.0"
         },
+        "python-dateutil": {
+            "version": "==2.6.1"
+        },
+        "pyyaml": {
+            "version": "==3.12"
+        },
         "requests": {
             "version": "==2.18.4"
         },
@@ -91,6 +109,9 @@
         },
         "tabulate": {
             "version": "==0.7.7"
+        },
+        "tornado": {
+            "version": "==4.5.2"
         },
         "traitlets": {
             "version": "==4.3.2"
