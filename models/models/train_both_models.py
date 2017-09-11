@@ -1,5 +1,5 @@
 from .training import init_h2o, get_data
-from .training import get_trained_model, print_gini
+from .training import get_trained_model, write_outputs
 
 
 def train_both_models(model_type):
@@ -21,14 +21,16 @@ def train_both_models(model_type):
     else:
         target_variable = "bad_loan_categorical"
 
-    name = "BadLoanModel"
-    bad_loan_model = get_trained_model(train, valid, name,
+    model_name = "BadLoanModel"
+    bad_loan_model = get_trained_model(train, valid, model_name,
                                        target_variable, model_type)
 
-    if model_type != 'logistic_regression':
-        print_gini(bad_loan_model)
+    write_outputs(bad_loan_model, model_name, model_type)
 
     target_variable = "int_rate"
-    name = "InterestRateModel"
-    _ = get_trained_model(train, valid, name, target_variable, model_type)
+    model_name = "InterestRateModel"
+    interest_rate_model = get_trained_model(train, valid, model_name,
+                                            target_variable, model_type)
+
+    write_outputs(interest_rate_model, model_name, model_type)
 

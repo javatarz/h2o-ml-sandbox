@@ -1,5 +1,6 @@
 import h2o
 import os
+import json
 from .available_models import random_forest_model
 from .available_models import logistic_regression
 from .available_models import gradient_boosting
@@ -89,10 +90,34 @@ def write_model_pojo(model):
     h2o.download_pojo(model, path=output_directory)
 
 
-def print_gini(model):
+def get_gini(model):
     """
     Print out the Gini coefficient for binary classification models
     :param model: Trained H2o model
     """
     gini = model.gini(valid=True)
     print("Gini coefficient: %s" % gini)
+    return gini
+
+
+def create_outputs(model, model_name, model_type):
+    output = {"model_name": model_name,
+              "model_type": model_type}
+
+    if model_name == "BadLoanModel" and model_type != 'logistic_regression':
+        gini = get_gini(model)
+        output['gini'] = gini
+
+    return output
+
+
+def write_outputs(model, model_name, model_type):
+    output = create_outputs(model, model_name, model_type)
+    out_file = 'build/model_output_data_%s_%s.json' % (model_name, model_type)
+    json.dump(output, open(out_file, 'w'), indent=3, sort_keys=True)
+
+
+
+
+
+
