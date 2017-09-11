@@ -94,6 +94,32 @@ def get_roc_plot(model, valid):
     return prediction
 
 
+def get_list_from_frame(frame):
+    # TODO: This is awkward but it works
+    data_frame = frame.as_data_frame()[1:]
+    return [float(i[0]) for i in data_frame]
 
 
+def get_score_from_model_and_frame(model, frame):
+    prediction = model.predict(frame)['p1']
+    score = get_list_from_frame(prediction)
+    assert len(score) == len(frame)
+    return score
 
+
+def get_y_true_from_frame(frame):
+    y_true = get_list_from_frame(frame['bad_loan'] == 1)
+    return [int(i) for i in y_true]
+
+
+def get_y_true_and_score_from_frame(model, frame):
+    score = get_score_from_model_and_frame(model, frame)
+    y_true = get_y_true_from_frame(frame)
+    return np.array(y_true), np.array(score)
+
+
+def get_fallout_recall(model, frame):
+    y_true, score = get_y_true_and_score_from_frame(model, frame)
+    accuracy_curves = get_accuracy_curves(y_true, score)
+    gini = calculate_gini(accuracy_curves['fallout'],
+                          accuracy_curves['recall'])
