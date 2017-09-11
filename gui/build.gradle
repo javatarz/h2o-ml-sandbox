@@ -1,0 +1,7 @@
+group 'me.karun.h2o'
+version '1.0-SNAPSHOT'
+
+task run(type: Exec) {
+  commandLine 'python', '-m', 'SimpleHTTPServer', '8000'
+  workingDir 'src'
+}
