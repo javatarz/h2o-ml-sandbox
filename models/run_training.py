@@ -9,4 +9,3 @@ if __name__ == "__main__":
     bad_loan_model, interest_rate_model, valid = train_both_models(model_type)
 
     junk = get_fallout_recall(bad_loan_model, valid)
-

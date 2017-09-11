@@ -1,7 +1,7 @@
 import json
 import os
-from h2o.estimators import H2ORandomForestEstimator
 from h2o.estimators import H2OGradientBoostingEstimator
+from h2o.estimators import H2ORandomForestEstimator
 
 
 def get_params(name_tag):

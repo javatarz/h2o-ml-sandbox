@@ -27,8 +27,8 @@ def get_accuracy_curves(y_true, y_prob):
     true_neg = n_false[::-1].cumsum()[::-1] - n_false
     false_neg = n_true[::-1].cumsum()[::-1] - n_true
 
-    recall = true_pos/(true_pos + false_neg)
-    fallout = false_pos/(false_pos + true_neg)
+    recall = true_pos / (true_pos + false_neg)
+    fallout = false_pos / (false_pos + true_neg)
 
     accuracy_measures = {"threshold": thresh,
                          "true_pos": true_pos,
@@ -81,7 +81,7 @@ def calculate_gini(fallout, recall):
     :return: Gini score
     """
     # Sort by fallout but use recall for tie breaker
-    so = np.argsort(fallout + 1e-9*recall)
+    so = np.argsort(fallout + 1e-9 * recall)
 
     # Area under the curve
     auc = trapz(recall[so], fallout[so])

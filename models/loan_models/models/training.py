@@ -1,8 +1,9 @@
 import h2o
-import os
 import json
-from .available_models import random_forest_model
+import os
+
 from .available_models import gradient_boosting
+from .available_models import random_forest_model
 
 
 def init_h2o():
@@ -109,9 +110,3 @@ def write_outputs(model, model_name, model_type):
     output = create_outputs(model, model_name, model_type)
     out_file = 'build/model_output_data_%s_%s.json' % (model_name, model_type)
     json.dump(output, open(out_file, 'w'), indent=3, sort_keys=True)
-
-
-
-
-
-
