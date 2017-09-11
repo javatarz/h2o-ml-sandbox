@@ -1,43 +1,50 @@
-def main():
-    # Load the H2O library and start up the H2O cluter locally on your machine
-    import h2o
-    import numpy as np
-    import os
-    import sys
-    from h2o.estimators import H2ORandomForestEstimator
+import h2o
+import os
+import sys
+from h2o.estimators import H2ORandomForestEstimator
 
-    # Number of threads, nthreads = -1, means use all cores on your machine
-    # max_mem_size is the maximum memory (in GB) to allocate to H2O
-    h2o.init(nthreads=-1, max_mem_size=8)
 
+def init_h2o():
+    """
+    Start up H2o
+    """
+    h2o.init(nthreads=-1)
+
+
+def get_data():
+    """
+    Get the training and validation data
+    :return:
+    """
     loan_csv = "{}/data/loan.csv".format("" if len(sys.argv) == 0 else sys.argv[1])
-    # Alternatively, you can import the data directly from a URL
-    # loan_csv = "https://raw.githubusercontent.com/h2oai/app-consumer-loan/master/data/loan.csv"
     loans = h2o.import_file(loan_csv)
 
     print("Import approved and rejected loan requests...")
 
     loans["bad_loan"] = loans["bad_loan"].asfactor()
-    n_lines = len(loans)
-    rand = np.random.rand(n_lines)
-
-    # train = loans[rand <= 0.8, :]
-    # valid = loans[rand > 0.8, :]
 
     train, valid, test = loans.split_frame([0.79, 0.2], seed=1234)
+    return train, valid
+
+
+def train_bad_loan_model(train, valid):
+    """
+    Train the Bad Loan model
+    :param train: training frame
+    :param valid: validation frame
+    :return:
+    """
 
     # Prepare predictors and response columns
-    # myX = loans.col_names[:-1]     #last column is Cover_Type, our desired response variable
-    # myY = loans.col_names[-1]
+    target_variable = "bad_loan"
 
-    myY = "bad_loan"
-    myX = ["loan_amnt", "longest_credit_length", "revol_util", "emp_length",
-           "home_ownership", "annual_inc", "purpose", "addr_state", "dti",
-           "delinq_2yrs", "total_acc", "verification_status", "term"]
+    input_variables = ["loan_amnt", "longest_credit_length", "revol_util",
+                       "emp_length", "home_ownership", "annual_inc",
+                       "purpose", "addr_state", "dti", "delinq_2yrs",
+                       "total_acc", "verification_status", "term"]
 
     model = H2ORandomForestEstimator(
         ntrees=100,
-        # learn_rate=0.05,
         max_depth=5,
         stopping_tolerance=0.01,  # 10-fold increase in threshold as defined in rf_v1
         stopping_rounds=2,
@@ -45,26 +52,35 @@ def main():
         model_id="BadLoanModel",
         seed=2000000
     )
-    model.train(myX, myY, training_frame=train, validation_frame=valid)
+    model.train(input_variables, target_variable,
+                training_frame=train, validation_frame=valid)
 
     print(model)
+    gini = model.gini(valid=True)
+    print("Bad loan Gini coefficient: %s" % gini)
+    write_model_pojo(model)
+    return model
 
-    # Download generated POJO for model
-    output_directory = "build"
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
 
-    h2o.download_pojo(model, path=output_directory)
+def train_interest_rate_model(train, valid):
+    """
+    Train the Interest Rate model
+    :param train: training frame
+    :param valid: validation frame
+    :return:
+    """
 
     # Interest rate model
-    myY = "int_rate"
-    myX = ["loan_amnt", "longest_credit_length", "revol_util", "emp_length",
-           "home_ownership", "annual_inc", "purpose", "addr_state", "dti",
-           "delinq_2yrs", "total_acc", "verification_status", "term"]
+    target_variable = "int_rate"
+
+    input_variables = ["loan_amnt", "longest_credit_length",
+                       "revol_util", "emp_length", "home_ownership",
+                       "annual_inc", "purpose", "addr_state", "dti",
+                       "delinq_2yrs", "total_acc", "verification_status",
+                       "term"]
 
     model = H2ORandomForestEstimator(
         ntrees=100,
-        # learn_rate=0.05,
         max_depth=5,
         stopping_tolerance=0.01,  # 10-fold increase in threshold as defined in rf_v1
         stopping_rounds=2,
@@ -72,16 +88,41 @@ def main():
         model_id="InterestRateModel",
         seed=2000000
     )
-    model.train(myX, myY, training_frame=train, validation_frame=valid)
+    model.train(input_variables, target_variable,
+                training_frame=train, validation_frame=valid)
 
     print(model)
+    write_model_pojo(model)
+    return model
 
-    # Download generated POJO for model
+
+def write_model_pojo(model):
+    """
+    Write the model as POJO
+    :param model: trained model
+    :return: None
+    """
+
+    # Relative path from code dir
+    output_directory = "build"
+
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
 
     h2o.download_pojo(model, path=output_directory)
 
 
+def train_models():
+    """
+    Train both models
+    :return: None
+    """
+    init_h2o()
+    train, valid = get_data()
+    train_bad_loan_model(train, valid)
+    train_interest_rate_model(train, valid)
+
+
 if __name__ == "__main__":
-    main()
+    train_models()
+
