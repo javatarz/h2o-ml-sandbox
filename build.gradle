@@ -3,11 +3,12 @@ group 'me.karun.h2o'
 allprojects {
   tasks.withType(Exec) {
     standardOutput = new ByteArrayOutputStream()
-    errorOutput = standardOutput
+    errorOutput = new ByteArrayOutputStream()
     ignoreExitValue = true
     doLast {
       if (execResult.exitValue != 0) {
         println(standardOutput.toString())
+        System.err.println(errorOutput.toString())
         throw new GradleException("exec failed; see output above") as Throwable
       }
     }
