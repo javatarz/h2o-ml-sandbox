@@ -123,3 +123,5 @@ def get_fallout_recall(model, frame):
     accuracy_curves = get_accuracy_curves(y_true, score)
     gini = calculate_gini(accuracy_curves['fallout'],
                           accuracy_curves['recall'])
+    print('Calculated Gini is: %s' % gini)
+    return gini

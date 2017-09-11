@@ -94,14 +94,6 @@ def get_gini(model):
     return gini
 
 
-def calculate_roc_curve(model, valid):
-    prediction = model.predict(valid)
-    y_true = valid['bad_loan'] == 1
-    y_prob = prediction
-    accuracy_curves = get_accuracy_curves(y_true, y_prob)
-    gini = calculate_gini(accuracy_curves['fallout'],
-                          accuracy_curves['recall'])
-
 def create_outputs(model, model_name, model_type):
     output = {"model_name": model_name,
               "model_type": model_type}
