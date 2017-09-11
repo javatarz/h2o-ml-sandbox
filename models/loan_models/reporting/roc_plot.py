@@ -1,8 +1,10 @@
 from bokeh.plotting import figure, output_file, save, show
+from .accuracy_curves import calculate_gini
 
 
 def make_roc_plot(fallout, recall):
-    plot = figure(title='ROC plot',
+    gini = calculate_gini(fallout, recall)
+    plot = figure(title='ROC plot: gini=%s' % gini,
                   x_axis_label="Fallout",
                   y_axis_label="Recall")
 
