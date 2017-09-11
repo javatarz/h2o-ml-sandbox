@@ -4,7 +4,9 @@ final packageName = 'me.karun.loans.service.model'
 final prepDir = "${buildDir}/prep"
 
 task clean {
-  delete buildDir
+  doLast {
+    delete buildDir
+  }
 }
 
 task installDeps(type: Exec) {
@@ -36,7 +38,7 @@ task moveCode(type: Copy, dependsOn: prepCode) {
 task moveLibs(type: Copy) {
   from 'build'
   include '*.jar'
-  into '../service/lib'
+  into '../service/libs'
 }
 
 task build(dependsOn: [moveCode, moveLibs])

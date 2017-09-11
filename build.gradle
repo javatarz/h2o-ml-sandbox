@@ -1,4 +1,4 @@
-group 'me.karun'
+group 'me.karun.h2o'
 
 allprojects {
   tasks.withType(Exec) {
