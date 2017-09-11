@@ -13,6 +13,7 @@ easy_install-3.6 pipenv pew virtualenv
 ./gradlew :services:run
 ./gradlew :gui:run
 open http://localhost:8000
+open models/build/roc_plot.html
 ```
 
 High revolving credit (with other values set to default) causes a decline. Low revolving credit causes an accept.
