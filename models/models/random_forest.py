@@ -27,67 +27,58 @@ def get_data():
     return train, valid
 
 
-def train_bad_loan_model(train, valid):
+def random_forest_model(name):
     """
-    Train the Bad Loan model
-    :param train: training frame
-    :param valid: validation frame
+    Get the (untrained) Random Forest Model
+    :param name: model name, will determine filename
+    :return: model
+    """
+    model = H2ORandomForestEstimator(
+        ntrees=100,
+        max_depth=5,
+        stopping_tolerance=0.01,
+        stopping_rounds=2,
+        score_each_iteration=True,
+        model_id=name,
+        seed=2000000
+    )
+    return model
+
+
+def get_input_variables():
+    """
+    Get the input variables (predictors) used to train the model
     :return:
     """
-
-    # Prepare predictors and response columns
-    target_variable = "bad_loan"
-
     input_variables = ["loan_amnt", "longest_credit_length", "revol_util",
                        "emp_length", "home_ownership", "annual_inc",
                        "purpose", "addr_state", "dti", "delinq_2yrs",
                        "total_acc", "verification_status", "term"]
 
-    model = H2ORandomForestEstimator(
-        ntrees=100,
-        max_depth=5,
-        stopping_tolerance=0.01,  # 10-fold increase in threshold as defined in rf_v1
-        stopping_rounds=2,
-        score_each_iteration=True,
-        model_id="BadLoanModel",
-        seed=2000000
-    )
-    model.train(input_variables, target_variable,
-                training_frame=train, validation_frame=valid)
+    return input_variables
 
-    print(model)
+
+def print_gini(model):
+    """
+    Print out the Gini coefficient for binary classification models
+    :param model: Trained H2o model
+    """
     gini = model.gini(valid=True)
-    print("Bad loan Gini coefficient: %s" % gini)
-    write_model_pojo(model)
-    return model
+    print("Gini coefficient: %s" % gini)
 
 
-def train_interest_rate_model(train, valid):
+def get_trained_model(train, valid, name, target_variable):
     """
-    Train the Interest Rate model
-    :param train: training frame
-    :param valid: validation frame
-    :return:
+    :param train: Training frame
+    :param valid: Validation frame
+    :param name: String, Name of model, determines name of file
+    :param target_variable: String, Target variable to be predicted
+    :return: Trained model
     """
 
-    # Interest rate model
-    target_variable = "int_rate"
+    input_variables = get_input_variables()
+    model = random_forest_model(name)
 
-    input_variables = ["loan_amnt", "longest_credit_length",
-                       "revol_util", "emp_length", "home_ownership",
-                       "annual_inc", "purpose", "addr_state", "dti",
-                       "delinq_2yrs", "total_acc", "verification_status",
-                       "term"]
-
-    model = H2ORandomForestEstimator(
-        ntrees=100,
-        max_depth=5,
-        stopping_tolerance=0.01,  # 10-fold increase in threshold as defined in rf_v1
-        stopping_rounds=2,
-        score_each_iteration=True,
-        model_id="InterestRateModel",
-        seed=2000000
-    )
     model.train(input_variables, target_variable,
                 training_frame=train, validation_frame=valid)
 
@@ -112,17 +103,24 @@ def write_model_pojo(model):
     h2o.download_pojo(model, path=output_directory)
 
 
-def train_models():
+def train_both_models():
     """
     Train both models
-    :return: None
     """
     init_h2o()
+
     train, valid = get_data()
-    train_bad_loan_model(train, valid)
-    train_interest_rate_model(train, valid)
+
+    target_variable = "bad_loan"
+    name = "BadLoanModel"
+    bad_loan_model = get_trained_model(train, valid, name, target_variable)
+    print_gini(bad_loan_model)
+
+    target_variable = "int_rate"
+    name = "InterestRateModel"
+    _ = get_trained_model(train, valid, name, target_variable)
 
 
 if __name__ == "__main__":
-    train_models()
+    train_both_models()
 
