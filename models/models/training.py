@@ -1,7 +1,8 @@
 import h2o
 import os
 import sys
-from h2o.estimators import H2ORandomForestEstimator
+
+from .available_models import random_forest_model
 
 
 def init_h2o():
@@ -25,24 +26,6 @@ def get_data():
 
     train, valid, test = loans.split_frame([0.79, 0.2], seed=1234)
     return train, valid
-
-
-def random_forest_model(name):
-    """
-    Get the (untrained) Random Forest Model
-    :param name: model name, will determine filename
-    :return: model
-    """
-    model = H2ORandomForestEstimator(
-        ntrees=100,
-        max_depth=5,
-        stopping_tolerance=0.01,
-        stopping_rounds=2,
-        score_each_iteration=True,
-        model_id=name,
-        seed=2000000
-    )
-    return model
 
 
 def get_input_variables():
@@ -101,26 +84,3 @@ def write_model_pojo(model):
         os.makedirs(output_directory)
 
     h2o.download_pojo(model, path=output_directory)
-
-
-def train_both_models():
-    """
-    Train both models
-    """
-    init_h2o()
-
-    train, valid = get_data()
-
-    target_variable = "bad_loan"
-    name = "BadLoanModel"
-    bad_loan_model = get_trained_model(train, valid, name, target_variable)
-    print_gini(bad_loan_model)
-
-    target_variable = "int_rate"
-    name = "InterestRateModel"
-    _ = get_trained_model(train, valid, name, target_variable)
-
-
-if __name__ == "__main__":
-    train_both_models()
-
