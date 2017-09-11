@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 version '1.0-SNAPSHOT'
 
-mainClassName = 'me.karun.loans.service.App'
+mainClassName = 'me.karun.loans.services.App'
 
 sourceCompatibility = 1.8
 

@@ -1,4 +1,4 @@
-package me.karun.loans.service.responses;
+package me.karun.loans.services.responses;
 
 import hex.genmodel.easy.prediction.BinomialModelPrediction;
 

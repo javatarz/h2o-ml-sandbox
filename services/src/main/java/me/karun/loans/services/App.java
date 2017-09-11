@@ -1,17 +1,17 @@
-package me.karun.loans.service;
+package me.karun.loans.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import hex.genmodel.easy.EasyPredictModelWrapper;
 import hex.genmodel.easy.RowData;
-import me.karun.loans.service.model.BadLoanModel;
+import me.karun.loans.services.model.BadLoanModel;
 
 import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static me.karun.loans.service.responses.BadLoanResponse.response;
+import static me.karun.loans.services.responses.BadLoanResponse.response;
 import static spark.Spark.*;
 
 public class App {

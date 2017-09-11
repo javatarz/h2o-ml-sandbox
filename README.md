@@ -12,4 +12,7 @@ easy_install pipenv pew virtualenv
 ./gradlew build
 ./gradlew :services:run
 ./gradlew :gui:run
+open http://localhost:8000
 ```
+
+High revolving credit (with other values set to default) causes a decline. Low revolving credit causes an accept.

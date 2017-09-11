@@ -1,4 +1,4 @@
-package me.karun.loans.service;
+package me.karun.loans.services;
 
 import org.junit.Rule;
 import org.junit.Test;

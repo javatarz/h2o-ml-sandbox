@@ -1,6 +1,6 @@
 import static java.lang.System.lineSeparator
 
-final packageName = 'me.karun.loans.service.model'
+final packageName = 'me.karun.loans.services.model'
 final prepDir = "${buildDir}/prep"
 
 task clean {
@@ -32,13 +32,13 @@ task prepCode(dependsOn: [train, createPrepDir]) {
 
 task moveCode(type: Copy, dependsOn: prepCode) {
   from "${prepDir}/BadLoanModel.java"
-  into '../service/src/main/java/me/karun/loans/service/model'
+  into '../services/src/main/java/me/karun/loans/services/model'
 }
 
 task moveLibs(type: Copy) {
   from 'build'
   include '*.jar'
-  into '../service/libs'
+  into '../services/libs'
 }
 
 task build(dependsOn: [moveCode, moveLibs])
