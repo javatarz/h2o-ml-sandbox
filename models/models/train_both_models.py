@@ -12,14 +12,10 @@ def train_both_models(model_type):
 
     init_h2o()
 
-    train, valid = get_data()
+    print("Training Bad Loan Model with %s" % model_type)
 
-    if model_type == "logistic_regression":
-        # Logistic regression requires 0 or 1 integer
-        # rather than categorical (enum)
-        target_variable = "bad_loan"
-    else:
-        target_variable = "bad_loan_categorical"
+    train, valid = get_data()
+    target_variable = "bad_loan_categorical"
 
     model_name = "BadLoanModel"
     bad_loan_model = get_trained_model(train, valid, model_name,
@@ -27,10 +23,12 @@ def train_both_models(model_type):
 
     write_outputs(bad_loan_model, model_name, model_type)
 
+    print("Training Interest Rate Model with %s" % model_type)
     target_variable = "int_rate"
     model_name = "InterestRateModel"
     interest_rate_model = get_trained_model(train, valid, model_name,
                                             target_variable, model_type)
 
     write_outputs(interest_rate_model, model_name, model_type)
+    return bad_loan_model, interest_rate_model, valid
 

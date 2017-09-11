@@ -1,7 +1,6 @@
 import json
 import os
 from h2o.estimators import H2ORandomForestEstimator
-from h2o.estimators import H2OGeneralizedLinearEstimator
 from h2o.estimators import H2OGradientBoostingEstimator
 
 
@@ -25,16 +24,6 @@ def random_forest_model(name):
     """
     params = get_params("random_forest")
     return H2ORandomForestEstimator(model_id=name, **params)
-
-
-def logistic_regression(name):
-    """
-    Get the Logistic Rregression Model
-    :param name: model name, will determine filename
-    :return: model
-    """
-    params = get_params("logistic_regression")
-    return H2OGeneralizedLinearEstimator(model_id=name, **params)
 
 
 def gradient_boosting(name):

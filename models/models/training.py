@@ -2,7 +2,6 @@ import h2o
 import os
 import json
 from .available_models import random_forest_model
-from .available_models import logistic_regression
 from .available_models import gradient_boosting
 
 
@@ -54,13 +53,8 @@ def get_trained_model(train, valid, model_name, target_variable, model_type):
 
     if model_type == "random_forest":
         model = random_forest_model(model_name)
-
-    elif model_type == "logistic_regression":
-        model = logistic_regression(model_name)
-
     elif model_type == "gradient_boosting":
         model = gradient_boosting(model_name)
-
     else:
         print("Unrecognized model_type: %s" % model_type)
 
@@ -100,11 +94,19 @@ def get_gini(model):
     return gini
 
 
+def calculate_roc_curve(model, valid):
+    prediction = model.predict(valid)
+    y_true = valid['bad_loan'] == 1
+    y_prob = prediction
+    accuracy_curves = get_accuracy_curves(y_true, y_prob)
+    gini = calculate_gini(accuracy_curves['fallout'],
+                          accuracy_curves['recall'])
+
 def create_outputs(model, model_name, model_type):
     output = {"model_name": model_name,
               "model_type": model_type}
 
-    if model_name == "BadLoanModel" and model_type != 'logistic_regression':
+    if model_name == "BadLoanModel":
         gini = get_gini(model)
         output['gini'] = gini
 
