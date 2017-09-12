@@ -3,9 +3,9 @@ from loan_models.reporting.accuracy_curves import get_fallout_recall, calculate_
 from loan_models.reporting.roc_plot import make_roc_plot
 
 if __name__ == "__main__":
-    # model_type = "random_forest"
+    model_type = "random_forest"
     # model_type = "gradient_boosting"
-    model_type = "deep_learning"
+    # model_type = "deep_learning"
     bad_loan_model, interest_rate_model, valid = train_both_models(model_type)
 
     fallout, recall = get_fallout_recall(bad_loan_model, valid)

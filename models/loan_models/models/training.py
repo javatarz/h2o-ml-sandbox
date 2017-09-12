@@ -38,7 +38,6 @@ def get_input_variables():
                        "purpose", "addr_state", "dti", "delinq_2yrs",
                        "total_acc", "int_rate", "verification_status", "term"]
 
-
     return input_variables
 
 
