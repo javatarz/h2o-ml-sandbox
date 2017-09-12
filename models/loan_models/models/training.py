@@ -36,7 +36,7 @@ def get_input_variables():
     input_variables = ["loan_amnt", "longest_credit_length", "revol_util",
                        "emp_length", "home_ownership", "annual_inc",
                        "purpose", "addr_state", "dti", "delinq_2yrs",
-                       "total_acc", "int_rate", "verification_status", "term"]
+                       "total_acc", "verification_status", "term"]
 
     return input_variables
 
